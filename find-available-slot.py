@@ -2,7 +2,6 @@
 
 import optparse
 import os
-import re
 import sys
 
 import validator
@@ -55,8 +54,8 @@ if __name__ == "__main__":
             sys.exit(0)
 
         finder = Finder(path, minutes, people)
-        result = finder.search()
-        print(result)
+        # result = finder.search()
+        # print(result)
 
     except KeyboardInterrupt:
         print("Ctrl^C exit")

@@ -20,7 +20,7 @@ def validate_input(path, minutes, people):
     if not os.path.exists(path):
         return "[!] Directory '%s' not found" % path
 
-    # check if there is any .txt file, normalize path for Windows
+    # check if there is any .txt file
     files = glob.glob(os.path.normpath(path + "/*.txt"))
     if len(files) == 0:
         return "[!] No files to read in '%s' directory" % path
