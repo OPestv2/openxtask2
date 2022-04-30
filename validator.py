@@ -24,4 +24,10 @@ def validate_input(path, minutes, people):
     if len(files) == 0:
         return "[!] No files to read in '%s' directory" % path
 
+    # check if number of files is greater or equal to required number of people
+    num_of_files = len(files)
+    if people > num_of_files:
+        return "[!] Insufficient number of calendar files. Expected at least %d files (%d available in directory '%s')" \
+               % (people, num_of_files, path)
+
     return None

@@ -1,22 +1,25 @@
 #!/bin/python
 import glob
 import os
-import unittestbusy_time_timetable = []
+import unittest
+import random
 
 import validator
 
 
 class InputValidationTest(unittest.TestCase):
 
+    def setUp(self):
+        self.minutes = 30
+        self.people = 2
+        self.path = create_path("/in")
+
     def test_correct_values(self):
         """
         Check no error for correct values
         """
-        minutes = 30
-        people = 2
-        path = create_path("/in")
 
-        err = validator.validate_input(path, minutes, people)
+        err = validator.validate_input(self.path, self.minutes, self.people)
         self.assertEqual(err, None)
 
     def test_minutes_negative_value(self):
@@ -24,50 +27,106 @@ class InputValidationTest(unittest.TestCase):
         Check error for negative minutes value
         """
         minutes = -1
-        people = 2
-        path = create_path("/in")
 
-        err = validator.validate_input(path, minutes, people)
+        err = validator.validate_input(self.path, minutes, self.people)
         self.assertNotEqual(err, None)
 
     def test_people_negative_value(self):
         """
         Check error for negative people values
         """
-        minutes = 30
         people = -2
-        path = create_path("/in")
 
-        err = validator.validate_input(path, minutes, people)
+        err = validator.validate_input(self.path, self.minutes, people)
         self.assertNotEqual(err, None)
 
     def test_path_does_not_exist(self):
         """
         Check error for not existing path
         """
-        minutes = 30
-        people = 2
-        path = create_path("/does_not_exist")
+        rand = random.randint(10000000, 99999999)
+        path = create_path(f"/{rand}")
 
-        err = validator.validate_input(path, minutes, people)
+        err = validator.validate_input(path, self.minutes, self.people)
         self.assertNotEqual(err, None)
 
-    def test_files_found_in_directory(self):
+    def test_files_not_found_in_directory(self):
         """
         Check error if no .txt files exist in directory
         """
-        minutes = 30
-        people = 2
-        path = create_path("/in")
+        rand = random.randint(10000000, 99999999)
+        path = create_path(f"/{rand}")
+        # create empty, temporary directory
+        os.mkdir(path)
 
-        # count number of files
-        num_of_files = len(glob.glob(path + "/*.txt"))
+        err = validator.validate_input(path, self.minutes, self.people)
+        self.assertNotEqual(err, None)
 
-        err = validator.validate_input(path, minutes, people)
-        if num_of_files > 0:
-            self.assertEqual(err, None)
-        else:
-            self.assertNotEqual(err, None)
+        # remove directory
+        os.rmdir(path)
+
+    def test_files_found_in_directory(self):
+        """
+        Check number of .txt files in existing directory
+        """
+        rand = random.randint(10000000, 99999999)
+        path = create_path(f"/{rand}")
+        # create empty, temporary directory
+        os.mkdir(path)
+
+        number_of_files = 3
+        filenames = []
+
+        # create files
+        for i in range(number_of_files):
+            filename = str(random.randint(10000000, 99999999)) + ".txt"
+            while filename in filenames:
+                filename = str(random.randint(10000000, 99999999)) + ".txt"
+            filenames.append(filename)
+            with open(os.path.normpath(path + "/" + filename), "w"):
+                pass
+
+        # check
+        err = validator.validate_input(path, self.minutes, self.people)
+        self.assertEqual(err, None)
+
+        # remove files
+        for filename in filenames:
+            os.remove(os.path.normpath(path + "/" + filename))
+        # remove directory
+        os.rmdir(path)
+
+    def test_insufficient_calendar_files_in_directory(self):
+        """
+        Check number of .txt files in existing directory
+        """
+        rand = random.randint(10000000, 99999999)
+        path = create_path(f"/{rand}")
+        # create empty, temporary directory
+        os.mkdir(path)
+
+        number_of_files = 3
+        filenames = []
+
+        # create files
+        for i in range(number_of_files):
+            filename = str(random.randint(10000000, 99999999)) + ".txt"
+            while filename in filenames:
+                filename = str(random.randint(10000000, 99999999)) + ".txt"
+            filenames.append(filename)
+            with open(os.path.normpath(path + "/" + filename), "w"):
+                pass
+
+        # check
+        err = validator.validate_input(path, self.minutes, number_of_files+1)
+        self.assertNotEqual(err, None)
+
+        # remove files
+        for filename in filenames:
+            os.remove(os.path.normpath(path + "/" + filename))
+        # remove directory
+        os.rmdir(path)
+
 
 def create_path(path):
     """
