@@ -48,7 +48,7 @@ class FinderTest(unittest.TestCase):
 
         finder = Finder(create_path('/tests/in/multiple_calendars'), 20, 4, self.current_time)
         result = finder.search()
-        self.assertEqual(result.strftime(FORMAT), "2022-07-01 18:00:00")
+        self.assertEqual(result.strftime(FORMAT), "2022-07-03 19:00:01")
 
     def test_current_time_with_empty_calendar(self):
         pass
