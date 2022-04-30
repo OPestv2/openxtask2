@@ -1,6 +1,5 @@
 #!/bin/python
-
-
+import datetime
 import optparse
 import os
 import sys
@@ -13,13 +12,17 @@ if __name__ == "__main__":
     option_names = {"minutes": "--duration-in-minutes", "people": "--minimum-people", "path": "--calendars"}
     try:
         parser = optparse.OptionParser("python3 find_available_slot.py --calendars PATH "
-                                       "--duration-in-minutes MINUTES --minimum-people PEOPLE")
+                                       "--duration-in-minutes MINUTES --minimum-people PEOPLE "
+                                       "[--current-time TIME]")
         parser.add_option(option_names["minutes"], dest="minutes", type="int",
                           help="Define how many minutes people must be available")
         parser.add_option(option_names["people"], dest="people", type="int",
                           help="Define minimum number of people that must be available")
         parser.add_option(option_names["path"], dest="path", type="string",
                           help="Define directory of calendars")
+        parser.add_option("--current-time", dest="time", type="string",
+                          help="Define current time manually | Format: \"yyyy-mm-dd HH:MM:SS\"",
+                          default=str(datetime.datetime.now()).split(".")[0])
 
         (options, args) = parser.parse_args()
 
@@ -34,6 +37,13 @@ if __name__ == "__main__":
         minutes = options.minutes
         people = options.people
         path = options.path
+        time = options.time
+        try:
+            time = datetime.datetime.strptime(time, "%Y-%m-%d %H:%M:%S")
+        except ValueError as ve:
+            print("[!] Incorrect format of --current-time value: %s" % ve)
+            sys.exit(0)
+
         # add '/' separator before destination directory if not provided
         if not path.startswith("/"):
             path = "/" + path
@@ -50,7 +60,7 @@ if __name__ == "__main__":
             print(result)
             sys.exit(0)
 
-        finder = Finder(path, minutes, people)
+        finder = Finder(path, minutes, people, time)
         result = finder.search()
         print(result)
 
