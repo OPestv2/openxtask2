@@ -81,7 +81,7 @@ Test cases:
 
 ### Usage
 To run tests use [finder_tests.py](tests/finder_tests.py) or [validator_tests.py](tests/validator_tests.py) file.
-Navigate to ```.../openxtask2``` directory and run tests using following commands:
+Navigate to ```.../openxtask2``` directory and use following commands:
 
 ```text
 python -m unittest tests/validator_tests.py
