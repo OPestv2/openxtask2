@@ -1,18 +1,31 @@
 import datetime
 import glob
 
+# every datetime object is formatted this way
 FORMAT = "%Y-%m-%d %H:%M:%S"
+# end of every last free time period is set to (start + MAX_TIME)
 MAX_TIME = 15*365
 
 
 class Finder:
-    def __init__(self, path, minutes, people):
+    def __init__(self, path, minutes, people, current_time):
         self.path = path
         self.minutes = minutes
         self.people = people
-        # self.current_time = datetime.datetime.now().strftime(FORMAT)
-        self.current_time = datetime.datetime.strptime("2022-07-01 09:00:00", FORMAT)
+        self.current_time = current_time
         self.timetable_list = self.__load_timetables()
+
+    def __print_timetable_list(self):
+        """
+        Function used in debugging
+        """
+        for timetable in self.timetable_list:
+            for period in timetable:
+                for boundary in period:
+                    print(boundary, end=" ")
+                print(", ", end="")
+            print("\n")
+        print("")
 
     def __load_timetables(self):
         """
@@ -27,6 +40,7 @@ class Finder:
 
         # files in working directory
         timetables = glob.glob(self.path + "/*.txt")
+
         # read all files in working directory
         for timetable_file, file_cnt in zip(timetables, range(len(timetables))):
 
@@ -50,7 +64,7 @@ class Finder:
                     if len(dates) == 1:
                         start = datetime.datetime.strptime(dates[0] + " 00:00:00", FORMAT)
                         end = datetime.datetime.strptime(dates[0] + " 23:59:59", FORMAT)
-                    # exact ranges
+                    # exact ranges of busy time
                     else:
                         start = datetime.datetime.strptime(dates[0], FORMAT)
                         end = datetime.datetime.strptime(dates[1], FORMAT)
@@ -76,8 +90,9 @@ class Finder:
 
                 # check if difference between dates is not less or equal to 0
                 # and check if difference is greater or equal to required minutes
+                # and check if busy period ends after or 'now'
                 # otherwise don't even care about these periods
-                if start < end and (end - start).seconds/60 >= self.minutes:
+                if start < end and end >= self.current_time and (end - start).seconds/60 >= self.minutes:
                     free_time_timetable[file_cnt].append([start, end])
 
             # file was empty or end of last busy period is earlier than 'now' set 'now'
@@ -147,8 +162,10 @@ class Finder:
                         # start of period must be before curr_min
                         # end of period must be after curr_min
                         # and time diff must be equal or greater than required amount of minutes
-                        if period[0] <= curr_min < period[1] and \
-                                int((period[1] - curr_min).seconds / 60) >= self.minutes:
+                        diff = period[1] - curr_min
+                        diff_minutes = (diff.days * 24 * 60) + (diff.seconds / 60)
+                        # diff = int(diff_seconds / 60)
+                        if period[0] <= curr_min < period[1] and diff_minutes >= self.minutes:
                             matching_elements += 1
                             # if required number of people is reached return curr_min date
                             # as it is the soonest date when ALL of this people have free time
