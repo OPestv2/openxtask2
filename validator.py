@@ -1,5 +1,6 @@
 import glob
 import os.path
+import sys
 
 
 def validate_input(path, minutes, people):
@@ -29,5 +30,5 @@ def validate_input(path, minutes, people):
     if people > num_of_files:
         return "[!] Insufficient number of calendar files. Expected at least %d files (%d available in directory '%s')" \
                % (people, num_of_files, path)
-
+      
     return None

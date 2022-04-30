@@ -215,4 +215,3 @@ class Finder:
             current_elements[min_element[1]] = min_element[0]
             # increase iterator
             iterators[min_element[1]] += 1
-
