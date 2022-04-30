@@ -1,3 +1,0 @@
-0000000000000000000000000000000000000000 2af2a1dd6190ce67c6d968a00c8f89fe7c6fd1cc OPestv2 <j.sieczka99@wp.pl> 1651225890 +0200	branch: Created from develop^0
-2af2a1dd6190ce67c6d968a00c8f89fe7c6fd1cc 2af2a1dd6190ce67c6d968a00c8f89fe7c6fd1cc OPestv2 <j.sieczka99@wp.pl> 1651241013 +0200	Branch: renamed refs/heads/finder_feature to refs/heads/validator_feature
-2af2a1dd6190ce67c6d968a00c8f89fe7c6fd1cc aee1f51264e9115b679deea2c421f01289595013 OPestv2 <j.sieczka99@wp.pl> 1651241278 +0200	commit: validator.py finished

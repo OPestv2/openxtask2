@@ -44,10 +44,6 @@ if __name__ == "__main__":
         if path.endswith("/"):
             path = path[:-1]
 
-        # print(minutes)
-        # print(people)
-        # print(path)
-
         # validate input
         result = validator.validate_input(path, minutes, people)
         if result is not None:
@@ -55,8 +51,8 @@ if __name__ == "__main__":
             sys.exit(0)
 
         finder = Finder(path, minutes, people)
-        # result = finder.search()
-        # print(result)
+        result = finder.search()
+        print(result)
 
     except KeyboardInterrupt:
         print("Ctrl^C exit")

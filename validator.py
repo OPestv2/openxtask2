@@ -1,6 +1,5 @@
 import glob
 import os.path
-import sys
 
 
 def validate_input(path, minutes, people):
