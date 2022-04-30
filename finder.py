@@ -8,6 +8,28 @@ MAX_TIME = 15*365
 
 
 class Finder:
+    """
+    A class used to load timetables from text files and find the soonest date when required number of people
+    have required amount of free time
+
+    path: str
+        path to text files
+    minutes: int
+        required amount of free time expressed in minutes
+    people: int
+        required amount of people
+    current_time: datetime
+        reference point in time formatted in format %Y-%m-%d %H:%M:%S
+
+
+    __load_timetables():
+        private method used to read all timetables from files
+        and processing them to obtain timetable of free time periods
+
+    search():
+        method used to find the soonest date based on free time periods
+    """
+
     def __init__(self, path, minutes, people, current_time):
         self.path = path
         self.minutes = minutes
