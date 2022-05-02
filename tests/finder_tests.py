@@ -7,11 +7,11 @@ from finder import Finder
 
 FORMAT = "%Y-%m-%d %H:%M:%S"
 
+
 class FinderTest(unittest.TestCase):
 
     def setUp(self):
         self.current_time = create_date("2022-07-01 09:00:00")
-
 
     def test_calendar_with_reversed_dates(self):
         """
@@ -50,8 +50,6 @@ class FinderTest(unittest.TestCase):
         result = finder.search()
         self.assertEqual(result.strftime(FORMAT), "2022-07-03 19:00:01")
 
-    def test_current_time_with_empty_calendar(self):
-        pass
 
 def create_path(path):
     """

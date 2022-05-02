@@ -191,8 +191,8 @@ class Finder:
                             matching_elements += 1
                             # if required number of people is reached return curr_min date
                             # as it is the soonest date when ALL of this people have free time
-                            if matching_elements >= self.people:
-                                return curr_min
+                    if matching_elements >= self.people:
+                        return curr_min
 
             # get next elements of currently stored periods in corresponding lists
             # find next soonest date and update this value in current_elements
